@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "mnist-web"
+version = "0.1.0"
+description = ""
+authors = ["D0won <ldwlee03@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+torch = "^2.4.1"
+torchvision = "^0.19.1"
+torchaudio = "^2.4.1"
+flask = "^3.0.3"
+matplotlib = "^3.9.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
