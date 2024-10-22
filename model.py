@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from PIL import Image
 from torchvision import transforms
 import torchvision.transforms.functional as TF
+
 class CNN(nn.Module):
     def __init__(self):
         super(CNN, self).__init__()
@@ -28,7 +29,7 @@ class CNN(nn.Module):
         output = F.log_softmax(x, dim=1)
         return output
 # 모델 가중치 경로
-model_path = r'/Users/idowon/Library/Mobile Documents/com~apple~CloudDocs/Study/2024-pytorch-study/mnist_web/mnist_model.pth'
+model_path = r'mnist_model.pth'
 # 모델 인스턴스 생성 및 가중치 로드
 model = CNN()
 model.load_state_dict(torch.load(model_path, map_location=torch.device('mps')))

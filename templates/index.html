@@ -1,5 +1,43 @@
-{% extends "default.html" %}
-{%block title%}홈페이지{%endblock%}
-{% block content %}
-<h1>홈페이지</h1>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNIST Prediction</title>
+    <style>
+        #video {
+            border: 1px solid black;
+        }
+        #prediction {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1>MNIST Prediction</h1>
+    <img id="video" src="/video_feed" width="320" height="240" alt="Webcam feed">
+    <p id="prediction"></p>
+    <script>
+        const predictionText = document.getElementById('prediction');
+
+        function fetchPrediction() {
+            fetch('/prediction')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.prediction !== undefined) {
+                        predictionText.textContent = `Prediction: ${data.prediction}`;
+                    } else {
+                        predictionText.textContent = "Not a valid digit image.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // 주기적으로 예측 요청을 보냄
+        setInterval(fetchPrediction, 1000); // 1초마다 예측 요청
+    </script>
+</body>
+</html>
