@@ -6,8 +6,17 @@ from PIL import Image
 import io
 import model as m
 import cv2
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # React 개발 서버 주소
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 templates = Jinja2Templates(directory="templates")
 
 # 기본 페이지 : 웹브라우저에서 카메라 영상 확인
@@ -42,7 +51,10 @@ def capture_and_predict(frame):
     with torch.no_grad():
         output = model(image_tensor)
         prediction = torch.argmax(output, dim=1).item()
-    
+    if prediction in range(4, 9) :
+        prediction = 0
+    else :
+        prediction = 1
     # 예측 결과를 전역 변수에 저장
     prediction_result = {"prediction": prediction}
 
