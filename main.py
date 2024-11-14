@@ -2,8 +2,8 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 import torch
+import serial
 from PIL import Image
-import io
 import model as m
 import cv2
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,6 +18,7 @@ app.add_middleware(
 )
 
 templates = Jinja2Templates(directory="templates")
+ser = serial.Serial('/dev/rfcomm0', 9600, timeout=1)
 
 # 기본 페이지 : 웹브라우저에서 카메라 영상 확인
 @app.get("/")
@@ -55,8 +56,19 @@ def capture_and_predict(frame):
         prediction = 0
     else :
         prediction = 1
+    bluetooth_serial(prediction)
     # 예측 결과를 전역 변수에 저장
     prediction_result = {"prediction": prediction}
+    
+# 블루투스로 시리얼 넘버 보내기(0 ~ 9)    
+def bluetooth_serial(prediction) :
+    if ser.is_open :
+        print('시리얼 포트가 열려있습니다.')
+    else :
+        print('닫혀있어요.')
+
+    ser.write(str(prediction).encode())
+    
 
 # 예측 결과를 반환하는 엔드포인트
 @app.get("/prediction")
