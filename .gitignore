@@ -331,5 +331,4 @@ $RECYCLE.BIN/
 
 *.toml
 *.lock
-*.pth
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,python,jupyternotebooks,flask
